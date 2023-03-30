@@ -4,6 +4,8 @@ const { verify } = require('crypto');
 const User = require('../models/userModel');
 const catchasync = require('../utilis/catchAsync');
 const AppError = require('../utilis/appError');
+const { use } = require('../app');
+
 
 const createToken = (user) =>
   jwt.sign({ id: user._id }, process.env.SECRET, {
@@ -18,7 +20,12 @@ const createToken = (user) =>
 //   },
 // });
 exports.signup = catchasync(async (req, res, next) => {
-  const newUser = await User.create(req.body);
+  const newUser = await User.create({
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+    passwordConfirm: req.body.passwordConfirm,
+  });
 
   const token = createToken(newUser);
 
@@ -74,6 +81,14 @@ exports.protected = catchasync(async (req, res, next) => {
     next(new AppError('User recently changed password', 401));
   }
 
-  req.user = currentUser
+  req.user = currentUser;
   next();
 });
+exports.restrictTo =
+  (...roles) =>
+  (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return next(new AppError('You do not have permission', 402));
+    }
+    next();
+  };
