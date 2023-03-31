@@ -1,24 +1,29 @@
 const { promisify } = require('util');
+const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const { verify } = require('crypto');
 const User = require('../models/userModel');
 const catchasync = require('../utilis/catchAsync');
 const AppError = require('../utilis/appError');
-const { use } = require('../app');
-
+const sendEmail = require('../utilis/sendMail');
 
 const createToken = (user) =>
   jwt.sign({ id: user._id }, process.env.SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 
-// return res.status(200).json({
-//   status: 'ok',
-//   token,
-//   data: {
-//     user,
-//   },
-// });
+const createAndSendJWT = (user, statusCode, res) => {
+  const token = createToken(user);
+
+  res.status(statusCode).json({
+    status: 'ok',
+    token,
+    data: {
+      user,
+    },
+  });
+};
+
 exports.signup = catchasync(async (req, res, next) => {
   const newUser = await User.create({
     name: req.body.name,
@@ -27,15 +32,7 @@ exports.signup = catchasync(async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm,
   });
 
-  const token = createToken(newUser);
-
-  res.status(200).json({
-    status: 'ok',
-    token,
-    data: {
-      newUser,
-    },
-  });
+  createAndSendJWT(newUser, 200, res);
 });
 
 exports.login = catchasync(async (req, res, next) => {
@@ -52,12 +49,8 @@ exports.login = catchasync(async (req, res, next) => {
   if (!user || !(await user.comparePassword(password, user.password))) {
     return next(new AppError('Email or password incorrect!', 401));
   }
-  const token = createToken(user);
 
-  res.status(200).json({
-    status: 'ok',
-    token,
-  });
+  createAndSendJWT(user, 200, res);
 });
 
 exports.protected = catchasync(async (req, res, next) => {
@@ -92,3 +85,79 @@ exports.restrictTo =
     }
     next();
   };
+exports.forgotPassword = catchasync(async (req, res, next) => {
+  // get email from user
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) {
+    return next(new AppError('User not found', 402));
+  }
+  // create reset token
+  const resetToken = await user.createResetToken();
+  await user.save({ validateBeforeSave: false });
+  try {
+    const resetURL = `${req.protocol}://${req.get(
+      'host'
+    )}/api/resetPassword/${resetToken}`;
+    const message = `submit a patch request to ${resetURL}, Ignore if you did not perform this action`;
+
+    await sendEmail({
+      email: user.email,
+      subject: 'Your Reset Token, valid for 10mins',
+      message,
+    });
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Email send',
+    });
+  } catch (err) {
+    user.passwordResetToken = undefined;
+    user.passwordTokenExipres = undefined;
+    await user.save({ validateBeforeSave: false });
+
+    return next(new AppError('Error occured,try again', 500));
+  }
+});
+exports.resetPassword = catchasync(async (req, res, next) => {
+  // get user based on posted token
+  const hashToken = crypto
+    .createHash('sha256')
+    .update(req.params.token)
+    .digest('hex');
+
+  const user = await User.findOne({
+    passwordResetToken: hashToken,
+    passwordResetTokenExpire: { $gt: Date.now() },
+  });
+  if (!user) {
+    return next(new AppError('User do not exit or token has expired'));
+  }
+  // update passwordChangedAt property on schema
+  // set new password
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  user.passwordResetToken = undefined;
+  user.passwordResetTokenExpire = undefined;
+  await user.save();
+  // send jwt
+
+  createAndSendJWT(user, 200, res);
+});
+exports.updatePassword = catchasync(async (req, res, next) => {
+  //1 get user from collection
+  const user = await User.findById(req.user.id).select('+password');
+
+  //2 check if the POSTed password is correct
+  if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
+    return next(new AppError('Your password is incorrect', 401));
+  }
+
+  //3 update password
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  await user.save(); //turn off validation
+
+  //4 send token
+
+  createAndSendJWT(user, 200, res);
+});

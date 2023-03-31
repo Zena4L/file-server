@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
+const AppError = require('../utilis/appError');
 
 const userSchema = new mongoose.Schema({
   //name,email,password,passwordconfirm
@@ -50,6 +51,10 @@ userSchema.pre('save', async function (next) {
 userSchema.pre(/^find/, function (next) {
   this.select('-__v');
   next();
+});
+userSchema.pre('save', function (next) {
+  if (!this.isModified('password') || !this.isNew) return next();
+  this.passwordChangeAt = Date.now() - 1000;
 });
 userSchema.methods.comparePassword = async function (
   candidatePassword,
