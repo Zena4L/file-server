@@ -15,8 +15,21 @@ const createToken = (user) =>
 const createAndSendJWT = (user, statusCode, res) => {
   const token = createToken(user);
 
+  const cookieOptions = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true,
+  };
+  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+
+  res.cookie('jwt', token, cookieOptions);
+
+  // Remove password from output
+  user.password = undefined;
+
   res.status(statusCode).json({
-    status: 'ok',
+    status: 'success',
     token,
     data: {
       user,
@@ -145,10 +158,10 @@ exports.resetPassword = catchasync(async (req, res, next) => {
 });
 exports.updatePassword = catchasync(async (req, res, next) => {
   //1 get user from collection
-  const user = await User.findById(req.user.id).select('+password');
+  const user = await User.findById(req.user._id).select('+password');
 
   //2 check if the POSTed password is correct
-  if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
+  if (!(await user.comparePassword(req.body.passwordCurrent, user.password))) {
     return next(new AppError('Your password is incorrect', 401));
   }
 
@@ -156,8 +169,7 @@ exports.updatePassword = catchasync(async (req, res, next) => {
   user.password = req.body.password;
   user.passwordConfirm = req.body.passwordConfirm;
   await user.save(); //turn off validation
-
   //4 send token
-
   createAndSendJWT(user, 200, res);
+  res.send(user);
 });
