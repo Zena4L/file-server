@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const userRouter = require('./routers/userRouter');
+const fileRouter = require('./routers/fileRouter');
 const AppError = require('./utilis/appError');
 const globalError = require('./controllers/errorController');
 
@@ -35,7 +36,8 @@ app.use(mongoSanitize());
 // Data sanitization against XSS
 app.use(xss());
 
-app.use('/api', userRouter);
+app.use('/api/user', userRouter);
+app.use('/api/file', fileRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`can't find ${req.originalUrl}`, 404));

@@ -24,8 +24,8 @@ router.route('/resetpassword/:token').patch(resetPassword);
 router.route('/updatepassword').patch(protected, updatePassword);
 
 // user routes
-router.route('/user').get(protected, restrictTo('admin'), getAllUsers);
-router.route('/user/updateme').patch(protected, updateMe);
-router.route('/user/deleteme').delete(protected, deleteMe);
+router.route('/').get(protected, restrictTo('admin'), getAllUsers);
+router.route('/updateme').patch(protected, updateMe);
+router.route('/deleteme').delete(protected, deleteMe);
 
 module.exports = router;
