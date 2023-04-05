@@ -1,6 +1,8 @@
+const mongoose = require('mongoose');
 const File = require('../models/fileModel');
 const catchAsync = require('../utilis/catchAsync');
 const AppError = require('../utilis/appError');
+const sendMail = require('../utilis/sendMail');
 
 // Upload a new file and only admin can perform thos
 
@@ -59,8 +61,28 @@ exports.sendViaEmail = catchAsync(async (req, res, next) => {
     return next(new AppError('File not found', 404));
   }
   // TODO: Implement email sending functionality
+  const message = 'Please see the attached file';
+  await sendMail({
+    email: req.user.email,
+    subject: 'File attachment',
+    message,
+    // attachments: [
+    //   {
+    //     filename: file.title,
+    //     path: file.fileUrl,
+    //   },
+    // ],
+  });
+
   // Update the file's email count
   file.emailCount += 1;
   await file.save();
-});
 
+  res.status(200).json({
+    status: 'success',
+    message: 'Email sent successfully',
+    data: {
+      file: file,
+    },
+  });
+});

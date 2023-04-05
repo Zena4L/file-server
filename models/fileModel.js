@@ -20,12 +20,12 @@ const fileSchema = new mongoose.Schema(
       type: String,
       required: [true, 'file requires a fileUrl'],
     },
-    downloads: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Download',
-      },
-    ],
+    // downloads: [
+    //   {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'Download',
+    //   },
+    // ],
     downloadCount: {
       type: Number,
       default: 0,
@@ -34,12 +34,12 @@ const fileSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    emails: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Email',
-      },
-    ],
+    // emails: [
+    //   {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'Email',
+    //   },
+    // ],
     uploadedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',

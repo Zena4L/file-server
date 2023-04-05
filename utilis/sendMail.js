@@ -15,6 +15,12 @@ const sendEmail = async function (options) {
     to: options.email,
     subject: options.subject,
     text: options.message,
+    attachments: [
+      {
+        filename: options.title,
+        path: options.fileUrl,
+      },
+    ],
   };
 
   await transporter.sendMail(mailoptions);
