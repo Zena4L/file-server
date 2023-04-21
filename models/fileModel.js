@@ -3,49 +3,36 @@ const slugify = require('slugify');
 
 const fileSchema = new mongoose.Schema(
   {
-    title: {
-      type: String,
-      required: true,
-    },
-    description: {
-      type: String,
-      required: true,
-    },
-    fileType: {
-      type: String,
-      enum: ['PDF', 'IMAGE', 'AUDIO', 'VIDEO'],
-      required: true,
-    },
     fileUrl: {
       type: String,
       required: [true, 'file requires a fileUrl'],
     },
-    // downloads: [
-    //   {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'Download',
-    //   },
-    // ],
-    downloadCount: {
-      type: Number,
-      default: 0,
+    title: {
+      type: String,
+      required: [true, 'file requires a title'],
     },
-    emailCount: {
-      type: Number,
-      default: 0,
+    description: {
+      type: String,
+      required: [true, 'file requires a description'],
     },
-    // emails: [
-    //   {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'Email',
-    //   },
-    // ],
+    fileType: {
+      type: String,
+      required: [true, 'file requires a category'],
+      enum: ['PDF', 'IMAGE', 'AUDIO', 'VIDEO'],
+    },
     uploadedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
-    slug: String,
+    emailCount: {
+      type: Number,
+      default: 0,
+    },
+    downloadCount: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );

@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
 const rateLimiter = require('express-rate-limit');
@@ -10,6 +11,11 @@ const AppError = require('./utilis/appError');
 const globalError = require('./controllers/errorController');
 
 const app = express();
+
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Set security HTTP headers
 app.use(helmet());
@@ -36,6 +42,12 @@ app.use(mongoSanitize());
 // Data sanitization against XSS
 app.use(xss());
 
+//view routes
+app.get('/', (req, res) => {
+  res.status(200).render('base');
+});
+
+// api route
 app.use('/api/user', userRouter);
 app.use('/api/file', fileRouter);
 

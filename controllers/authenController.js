@@ -66,7 +66,7 @@ exports.login = catchasync(async (req, res, next) => {
   createAndSendJWT(user, 200, res);
 });
 
-exports.protected = catchasync(async (req, res, next) => {
+exports.stricted = catchasync(async (req, res, next) => {
   //get token from header
   let token = ' ';
   if (

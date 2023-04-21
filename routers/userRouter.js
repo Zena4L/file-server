@@ -2,7 +2,7 @@ const express = require('express');
 const {
   signup,
   login,
-  protected,
+  stricted,
   restrictTo,
   forgotPassword,
   resetPassword,
@@ -21,11 +21,11 @@ router.route('/signup').post(signup);
 router.route('/login').post(login);
 router.route('/forgotpassword').post(forgotPassword);
 router.route('/resetpassword/:token').patch(resetPassword);
-router.route('/updatepassword').patch(protected, updatePassword);
+router.route('/updatepassword').patch(stricted, updatePassword);
 
 // user routes
-router.route('/').get(protected, restrictTo('admin'), getAllUsers);
-router.route('/updateme').patch(protected, updateMe);
-router.route('/deleteme').delete(protected, deleteMe);
+router.route('/').get(stricted, restrictTo('admin'), getAllUsers);
+router.route('/updateme').patch(stricted, updateMe);
+router.route('/deleteme').delete(stricted, deleteMe);
 
 module.exports = router;

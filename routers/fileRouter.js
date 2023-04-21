@@ -6,17 +6,17 @@ const {
   downloadFile,
   sendViaEmail,
 } = require('../controllers/fileController');
-const { protected } = require('../controllers/authenController');
+const { stricted } = require('../controllers/authenController');
 
 const router = express.Router();
 
 // upload route is for admin only
-router.route('/upload').post(protected, upload);
+router.route('/upload').post(stricted, upload);
 
-router.route('/').get(protected, getAllFiles);
-router.route('/:id').get(protected, getFile);
-router.route('/download/:id').get(protected, downloadFile);
-router.route('/sendemail/:id').get(protected, sendViaEmail);
+router.route('/').get(stricted, getAllFiles);
+router.route('/:id').get(stricted, getFile);
+router.route('/download/:id').get(stricted, downloadFile);
+router.route('/sendemail/:id').get(stricted, sendViaEmail);
 
 
 
