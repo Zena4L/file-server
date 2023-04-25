@@ -7,16 +7,35 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const userRouter = require('./routers/userRouter');
 const fileRouter = require('./routers/fileRouter');
+const viewRouter = require('./routers/viewRoutes');
 const AppError = require('./utilis/appError');
 const globalError = require('./controllers/errorController');
 
 const app = express();
 
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
 
-// app.use(express.static(path.join(__dirname, 'public')));
-
+// Serving static files
+app.use(express.static(path.join(__dirname, 'public')));
 // Set security HTTP headers
-app.use(helmet());
+// app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", 'cdnjs.cloudflare.com'],
+        styleSrc: ["'self'", "'unsafe-inline'", 'fonts.googleapis.com'],
+        imgSrc: ["'self'", 'data:', 'cdn.jsdelivr.net'],
+        fontSrc: ["'self'", 'fonts.gstatic.com'],
+        connectSrc: ["'self'", 'ws://localhost:3000'],
+        frameSrc: ["'self'", 'https://drive.google.com', 'https://users/'],
+        objectSrc: ["'none'"],
+      },
+    },
+  })
+);
 
 // Development logging
 if (process.env.NODE_ENV === 'development') {
@@ -40,10 +59,8 @@ app.use(mongoSanitize());
 // Data sanitization against XSS
 app.use(xss());
 
-//view routes
-app.get('/', (req, res) => {
-  res.status(200).render('base');
-});
+//views router
+app.use('/', viewRouter);
 
 // api route
 app.use('/api/user', userRouter);

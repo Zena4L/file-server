@@ -20,11 +20,10 @@ const fileSchema = new mongoose.Schema(
       required: [true, 'file requires a category'],
       enum: ['PDF', 'IMAGE', 'AUDIO', 'VIDEO'],
     },
-    uploadedBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: true,
-    },
+    // image: {
+    //   type: String,
+    //   required: [true, 'A file must have a image'],
+    // },
     emailCount: {
       type: Number,
       default: 0,
@@ -33,12 +32,25 @@ const fileSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    uploadedBy: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
+      required: [true, 'A file must have an uploader'],
+    },
+    slug: String,
   },
   { timestamps: true }
 );
 
 fileSchema.pre(/^find/, function (next) {
   this.select('-__v');
+  next();
+});
+fileSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'uploadedBy',
+    select: '-passwordChangeAt',
+  });
   next();
 });
 fileSchema.pre('save', function (next) {

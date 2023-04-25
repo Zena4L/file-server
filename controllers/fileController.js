@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 const File = require('../models/fileModel');
 const catchAsync = require('../utilis/catchAsync');
 const AppError = require('../utilis/appError');
@@ -12,6 +12,7 @@ exports.upload = catchAsync(async (req, res, next) => {
     description: req.body.description,
     fileType: req.body.fileType,
     fileUrl: req.body.path,
+    // image: req.body.image,
     uploadedBy: req.user.id,
   });
   res.status(200).json({
@@ -35,13 +36,23 @@ exports.getAllFiles = catchAsync(async (req, res, next) => {
 });
 
 exports.getFile = catchAsync(async (req, res, next) => {
-  const file = await File.findById(req.params.id);
+  const file = await File.findById(req.params.id).populate('uploadedBy');
   if (!file) {
     return next(new AppError('File not found', 404));
   }
   res.status(200).json({
     status: 'ok',
     data: [file],
+  });
+});
+exports.deleteFile = catchAsync(async (req, res, next) => {
+  const file = await File.findByIdAndDelete(req.params.id);
+  if (!file) {
+    return next(new AppError('File not found', 404));
+  }
+  res.status(200).json({
+    status: 'ok',
+    data: null,
   });
 });
 
@@ -60,7 +71,7 @@ exports.sendViaEmail = catchAsync(async (req, res, next) => {
   if (!file) {
     return next(new AppError('File not found', 404));
   }
-  
+
   const message = 'Please see the attached file';
   await sendMail({
     email: req.user.email,
