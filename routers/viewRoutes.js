@@ -1,5 +1,10 @@
 const express = require('express');
-const { getOveriew, getFile } = require('../controllers/viewsController');
+const {
+  getOveriew,
+  getFile,
+  login,
+  signup,
+} = require('../controllers/viewsController');
 
 const router = express.Router();
 
@@ -7,6 +12,8 @@ const router = express.Router();
 //   res.status(200).render('base');
 // });
 router.get('/', getOveriew);
+router.get('/login', login);
+router.get('/signup', signup);
 router.get('/:slug', getFile);
 
 module.exports = router;

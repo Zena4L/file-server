@@ -26,3 +26,10 @@ exports.getFile = catchAsync(async (req, res) => {
     file,
   });
 });
+
+exports.login = catchAsync(async (req, res) => {
+  res.status(200).render('login');
+});
+exports.signup = catchAsync(async (req, res) => {
+  res.status(200).render('signup');
+});

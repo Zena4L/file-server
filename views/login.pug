@@ -1,0 +1,44 @@
+extends base
+
+block content
+    .container.max-w-full.mx-auto.py-24.px-6
+        .font-sans
+            .max-w-sm.mx-auto.px-6
+                .relative.flex.flex-wrap
+                    .w-full.relative
+                        .mt-6
+                            .mb-5.pb-1border-b-2.text-center.font-base.text-gray-700
+                                span
+                                    | LOGIN
+                                    a.text-blue-500(href='https://twitter.com/framansi')
+                            .text-center.font-semibold.text-black
+                                | iFILE Project
+                            form.mt-8
+                                .mx-auto.max-w-lg
+                                    .py-2
+                                        span.px-1.text-sm.text-gray-600 Username
+                                        input.text-md.block.px-3.py-2.rounded-lg.w-full.bg-white.border-2.border-gray-300.placeholder-gray-600.shadow-md(placeholder='', type='text', class='focus:placeholder-gray-500 focus:bg-white focus:border-gray-600 focus:outline-none')
+                                    .py-2(x-data='{ show: true }')
+                                        span.px-1.text-sm.text-gray-600 Password
+                                        .relative
+                                            input.text-md.block.px-3.py-2.rounded-lg.w-full.bg-white.border-2.border-gray-300.placeholder-gray-600.shadow-md(placeholder='********', type="password", class='focus:placeholder-gray-500 focus:bg-white focus:border-gray-600 focus:outline-none')
+                                            .absolute.inset-y-0.right-0.pr-3.flex.items-center.text-sm.leading-5
+                                    .flex.justify-between
+                                        label.block.text-gray-500.font-bold.my-4
+                                            input.leading-loose.text-pink-600(type='checkbox')
+                                            |  
+                                            span.py-2.text-sm.text-gray-600.leading-snug
+                                                | Remember
+                                                | Me
+                                        |  
+                                        label.block.text-gray-500.font-bold.my-4
+                                            a.cursor-pointer.tracking-tighter.text-black.border-b-2.border-gray-200(href='#', class='hover:border-gray-400')
+                                                span
+                                                    | Forgot
+                                                    | Password?
+                                    |  
+                                    button.mt-3.text-lg.font-semibold.bg-gray-800.w-full.text-white.rounded-lg.px-6.py-3.block.shadow-xl(class='hover:text-white hover:bg-black')
+                                        | Login
+                                    div.flex.gap-3.pt-5 
+                                        | Don't have an account?
+                                        a.underline(href="/signup") signup here 

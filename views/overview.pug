@@ -1,39 +1,71 @@
 extends base
 
-block content
-    .bg-white.p-8.main(class="w-3/4")
-        .flex.justify-between.pb-10.mb-10
-            .search-bar
-                form.border-indigo-500.border.rounded-rounded.search-form(action='/search', method='GET')
-                    input.text-center.search-field(type='text', name='q', placeholder='Search file')
-                    button.search-btn(type='submit')
-            .flex.gap-5 
-                //- img.h-7.w-7.rounded-full(src="./img/blank-profile-picture-973460_960_720.webp", alt="User photo")
-                //- a.border-b-2(href="#", class="hover:border-b-indigo-500 transition ease-in duration:500")
-                //-     span Clement 
-                button.rounded-full.border.bg-indigo-50.px-5.border-sky-500(class="hover:bg-indigo-500 hover:text-white transition ease-out duration:500") Log in 
-                button.rounded-full.border.bg-indigo-50.px-5.border-sky-500(class="hover:bg-indigo-500 hover:text-white transition ease-out duration:500") Sign up
-        .card-container
-            each file in files
-                .card.flex.justify-evenly.border-b-2.pb-5.pt-5
-                    label
-                        input(type="checkbox" name="myCheckbox" value="true")
-                    .file-thumbnail-here
-                        span=file.fileType
-                    .file-name=file.title
-                    .svg-here
-                        a.flex.gap-3(href=`/${file.slug}`) 
-                            svg.w-6.h-6(xmlns='http://www.w3.org/2000/svg', fill='none', viewBox='0 0 24 24', stroke-width='1.5', stroke='currentColor')
-                                path(stroke-linecap='round', stroke-linejoin='round', d='M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z')
-                                path(stroke-linecap='round', stroke-linejoin='round', d='M15 12a3 3 0 11-6 0 3 3 0 016 0z') 
-                            h5 preview
-                    .svg-here
-                        a.flex.gap-3(href="#") 
-                            svg.w-6.h-6(xmlns='http://www.w3.org/2000/svg', fill='none', viewBox='0 0 24 24', stroke-width='1.5', stroke='currentColor')
-                                path(stroke-linecap='round', stroke-linejoin='round', d='M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3')
-                            h5 Download
-                    .svg-here
-                        a.flex.gap-3(href="#") 
-                            svg.w-6.h-6(xmlns='http://www.w3.org/2000/svg', fill='none', viewBox='0 0 24 24', stroke-width='1.5', stroke='currentColor')
-                                path(stroke-linecap='round', stroke-linejoin='round', d='M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75')
-                            h5 Send to mail
+block content 
+    .bg-gray-50.min-h-screen(class="w-3/4")
+        nav
+            .flex.justify-between.pb-10.mb-10.mt-10.px-5
+                .pt-2.relative.mx-5.text-gray-600
+                    input.border-2.border-gray-300.bg-white.h-10.px-5.pr-16.rounded-lg.text-sm(class='focus:outline-none', type='search', name='search', placeholder='Search')
+                    button.absolute.right-0.top-0.mt-5.mr-4(type='submit')
+                        svg#Capa_1.text-gray-600.h-4.w-4.fill-current(xmlns='http://www.w3.org/2000/svg', xmlns:xlink='http://www.w3.org/1999/xlink', version='1.1', x='0px', y='0px', viewBox='0 0 56.966 56.966', style='enable-background:new 0 0 56.966 56.966;', xml:space='preserve', width='512px', height='512px')
+                        path(d='M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z')
+                .flex.gap-5 
+                    //- img.h-7.w-7.rounded-full(src="./img/blank-profile-picture-973460_960_720.webp", alt="User photo")
+                    //- a.border-b-2(href="#", class="hover:border-b-indigo-500 transition ease-in duration:500")
+                    //-     span Clement 
+                    //- a.rounded-full.border.bg-indigo-50.px-5.border-sky-500(href="/login" class="hover:bg-indigo-500 hover:text-white transition ease-out duration:500") Log in 
+                    //- a.rounded-full.border.bg-indigo-50.px-5.border-sky-500(href="/signup" class="hover:bg-indigo-500 hover:text-white transition ease-out duration:500") Sign up
+                    // component
+                    a(href="/login") 
+                        button.group.rounded-2xl.h-10.w-48.bg-indigo-950.font-bold.text-lg.text-white.relative.overflow-hidden
+                            | Log in
+                            .absolute.duration-300.inset-0.w-full.h-full.transition-all.scale-0.rounded-2xl(class='group-hover:scale-100 group-hover:bg-white/30')
+                    a(href="/signup") 
+                        button.group.rounded-2xl.h-10.w-48.bg-indigo-950.font-bold.text-lg.text-white.relative.overflow-hidden
+                            | Sign Up
+                            .absolute.duration-300.inset-0.w-full.h-full.transition-all.scale-0.rounded-2xl(class='group-hover:scale-100 group-hover:bg-white/30')                   
+        div
+            .p-4
+                .bg-white.p-4.rounded-md
+                    div
+                        h2.mb-4.text-xl.font-bold.text-gray-700 ALL FILES
+                        div
+                            div
+                                .flex.justify-between.bg-sky-950.to-purple-600.rounded-md.py-2.px-4.text-white.font-bold.text-md.grid.grid-cols-6.place-items-center
+                                    div
+                                        span Select
+                                    div
+                                        span Type
+                                    div
+                                        span File
+                                    div
+                                        span Preview
+                                    div
+                                        span Download
+                                    div
+                                        span Download Via Mail
+                                .card-container
+                                    each file in files
+                                        .card.flex.justify-between.border-b-2.pb-5.pt-5.rounded-md.py-2.px-4.grid.grid-cols-6.place-items-center
+                                            label
+                                                input(type="checkbox" name="myCheckbox" value="true")
+                                            .file-thumbnail-here
+                                                span=file.fileType
+                                            .file-name=file.title
+                                            .svg-here
+                                                a.flex.gap-3(href=`/${file.slug}`) 
+                                                    svg.w-6.h-6(xmlns='http://www.w3.org/2000/svg', fill='none', viewBox='0 0 24 24', stroke-width='1.5', stroke='currentColor')
+                                                        path(stroke-linecap='round', stroke-linejoin='round', d='M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z')
+                                                        path(stroke-linecap='round', stroke-linejoin='round', d='M15 12a3 3 0 11-6 0 3 3 0 016 0z') 
+                                                    //- h5 preview
+                                            .svg-here
+                                                a.flex.gap-3(href="#") 
+                                                    svg.w-6.h-6(xmlns='http://www.w3.org/2000/svg', fill='none', viewBox='0 0 24 24', stroke-width='1.5', stroke='currentColor')
+                                                        path(stroke-linecap='round', stroke-linejoin='round', d='M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3')
+                                                    //- h5 Download
+                                            .svg-here
+                                                a.flex.gap-3(href="#") 
+                                                    svg.w-6.h-6(xmlns='http://www.w3.org/2000/svg', fill='none', viewBox='0 0 24 24', stroke-width='1.5', stroke='currentColor')
+                                                        path(stroke-linecap='round', stroke-linejoin='round', d='M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75')
+                                                    //- h5 Send to mail
+                                    
