@@ -28,7 +28,9 @@ exports.getFile = catchAsync(async (req, res) => {
 });
 
 exports.login = catchAsync(async (req, res) => {
-  res.status(200).render('login');
+  res.status(200).render('login', {
+    title: 'Login',
+  });
 });
 exports.signup = catchAsync(async (req, res) => {
   res.status(200).render('signup');

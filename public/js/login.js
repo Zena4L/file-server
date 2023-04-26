@@ -1,9 +1,10 @@
 /* eslint-disable no-undef */
+// import { axios } from "axios";
 
 async function login(email, password) {
   try {
-    const response = await axios.post(
-      'http://127.0.0.1:3000/api/user/login/',
+    await axios.post(
+      'http://localhost:3000/api/user/login',
       {
         email,
         password,
@@ -16,13 +17,15 @@ async function login(email, password) {
       }
     );
 
-    console.log(response.data);
+    // console.log(response.data);
     // do something with response
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     // handle error
   }
 }
+
+
 
 document.querySelector('.form').addEventListener('submit', (e) => {
   e.preventDefault();

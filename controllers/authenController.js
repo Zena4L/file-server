@@ -1,42 +1,12 @@
 const { promisify } = require('util');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
-const { verify } = require('crypto');
+// const { verify } = require('crypto');
 const User = require('../models/userModel');
 const catchasync = require('../utilis/catchAsync');
 const AppError = require('../utilis/appError');
 const sendEmail = require('../utilis/sendMail');
 
-// const createToken = (user) =>
-//   jwt.sign({ id: user._id }, process.env.SECRET, {
-//     expiresIn: process.env.JWT_EXPIRES_IN,
-//   });
-
-// const createAndSendJWT = (user, statusCode, res) => {
-//   const token = createToken(user);
-
-//   const cookieOptions = {
-//     expires: new Date(
-//       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
-//     ),
-//     httpOnly: true,
-//     sameSite: 'none',
-//   };
-//   if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
-
-//   res.cookie('jwt', token, cookieOptions);
-
-//   // Remove password from output
-//   user.password = undefined;
-
-//   res.status(statusCode).json({
-//     status: 'success',
-//     token,
-//     data: {
-//       user,
-//     },
-//   });
-// };
 const createToken = (user) =>
   jwt.sign({ id: user._id }, process.env.SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
@@ -46,12 +16,14 @@ const createAndSendJWT = (user, statusCode, res) => {
   const token = createToken(user);
 
   const cookieOptions = {
-    expires: new Date(
+    maxAge: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
     sameSite: 'none',
     secure: true,
+    domain: 'localhost',
+    path: '/',
   };
   if (process.env.NODE_ENV === 'production') {
     cookieOptions.secure = true;
@@ -209,3 +181,34 @@ exports.updatePassword = catchasync(async (req, res, next) => {
   createAndSendJWT(user, 200, res);
   res.send(user);
 });
+
+// Only for rendered pages, no errors!
+exports.isLoggedIn = async (req, res, next) => {
+  if (req.cookies.jwt) {
+    try {
+      // 1) verify token
+      const decoded = await promisify(jwt.verify)(
+        req.cookies.jwt,
+        process.env.SECRET
+      );
+
+      // 2) Check if user still exists
+      const currentUser = await User.findById(decoded.id);
+      if (!currentUser) {
+        return next();
+      }
+
+      // 3) Check if user changed password after the token was issued
+      if (currentUser.changePasswordAfter(decoded.iat)) {
+        return next();
+      }
+
+      // THERE IS A LOGGED IN USER
+      res.locals.user = currentUser;
+      return next();
+    } catch (err) {
+      return next();
+    }
+  }
+  next();
+};
