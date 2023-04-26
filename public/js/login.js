@@ -3,16 +3,19 @@
 async function login(email, password) {
   try {
     const response = await axios.post(
-      'http://127.0.0.1:3000/api/user/login',
+      'http://127.0.0.1:3000/api/user/login/',
       {
         email,
         password,
       },
       {
-        //AxiosRequestConfig parameter
-        withCredentials: true, //correct
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+        },
       }
     );
+
     console.log(response.data);
     // do something with response
   } catch (error) {
