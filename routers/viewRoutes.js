@@ -15,6 +15,6 @@ const router = express.Router();
 router.get('/', isLoggedIn, getOveriew);
 router.get('/login', login);
 router.get('/signup', signup);
-router.get('/:slug', getFile);
+router.get('/:slug', isLoggedIn, getFile);
 
 module.exports = router;

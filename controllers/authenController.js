@@ -72,6 +72,19 @@ exports.login = catchasync(async (req, res, next) => {
   createAndSendJWT(user, 200, res);
 });
 
+exports.logout = (req, res) => {
+  const cookieOptions = {
+    maxAge: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+    sameSite: 'none',
+    secure: true,
+    domain: 'localhost',
+    path: '/',
+  };
+  res.cookie('jwt', 'logded out', cookieOptions);
+  res.status(200).json({ status: 'success' });
+};
+
 exports.stricted = catchasync(async (req, res, next) => {
   //get token from header
   let token = ' ';

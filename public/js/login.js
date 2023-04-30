@@ -3,11 +3,14 @@
 
 async function login(email, password) {
   try {
-    await axios.post(
-      'http://localhost:3000/api/user/login',
+    const res = await axios(
       {
-        email,
-        password,
+        method: 'POST',
+        url: 'http://localhost:3000/api/user/login',
+        data: {
+          email,
+          password,
+        },
       },
       {
         withCredentials: true,
@@ -17,15 +20,16 @@ async function login(email, password) {
       }
     );
 
-    // console.log(response.data);
-    // do something with response
+    if (res.data.status === 'success') {
+      alert('Logged in successfully!');
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 1500);
+    }
   } catch (error) {
-    // console.error(error);
-    // handle error
+    alert(err.response.data.message);
   }
 }
-
-
 
 document.querySelector('.form').addEventListener('submit', (e) => {
   e.preventDefault();
@@ -34,4 +38,11 @@ document.querySelector('.form').addEventListener('submit', (e) => {
 
   // console.log({ email, password });
   login(email, password);
+});
+
+const logoutButtons = document.querySelectorAll('.logout');
+logoutButtons.forEach((logoutButton) => {
+  logoutButton.addEventListener('click', () => {
+    logoutButton.parentElement.submit();
+  });
 });
