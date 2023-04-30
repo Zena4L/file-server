@@ -7,6 +7,7 @@ const {
   forgotPassword,
   resetPassword,
   updatePassword,
+  logout,
 } = require('../controllers/authenController');
 const {
   getAllUsers,
@@ -19,6 +20,7 @@ const router = express.Router();
 // authorization routes, these routes are for authorization only
 router.route('/signup').post(signup);
 router.route('/login').post(login);
+router.route('/logout').get(logout);
 router.route('/forgotpassword').post(forgotPassword);
 router.route('/resetpassword/:token').patch(resetPassword);
 router.route('/updatepassword').patch(stricted, updatePassword);

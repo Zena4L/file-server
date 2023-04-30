@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
-// import { axios } from "axios";
 
-async function login(email, password) {
+export const login = async (email, password) => {
   try {
     const res = await axios(
       {
@@ -21,28 +20,27 @@ async function login(email, password) {
     );
 
     if (res.data.status === 'success') {
-      alert('Logged in successfully!');
+      // alert('Logged in successfully!');
       setTimeout(() => {
         window.location.href = '/';
       }, 1500);
     }
   } catch (error) {
-    alert(err.response.data.message);
+    alert('Incorrect Email or Password, Try again');
+    console.log(err.res.data.message);
   }
-}
+};
 
-document.querySelector('.form').addEventListener('submit', (e) => {
-  e.preventDefault();
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
+export const logout = async () => {
+  try {
+    const res = await axios({
+      method: 'GET',
+      url: 'http://localhost:3000/api/user/logout'
+    });
+    if ((res.data.status = 'success')) location.reload(true);
+  } catch (err) {
+    console.log(err.response);
+    showAlert('error', 'Error logging out! Try again.');
+  }
+};
 
-  // console.log({ email, password });
-  login(email, password);
-});
-
-const logoutButtons = document.querySelectorAll('.logout');
-logoutButtons.forEach((logoutButton) => {
-  logoutButton.addEventListener('click', () => {
-    logoutButton.parentElement.submit();
-  });
-});
