@@ -1,9 +1,13 @@
 /* eslint-disable no-undef */
 import {login,logout} from './login.js';
+import signUp from './signup.js';
 
 
 const loginForm = document.querySelector('.form');
 const logOutBtn = document.querySelector('#logout');
+
+const signup = document.querySelector('#sign-in');
+
 
 if (loginForm)
   loginForm.addEventListener('submit', (e) => {
@@ -14,3 +18,16 @@ if (loginForm)
   });
 
 if (logOutBtn) logOutBtn.addEventListener('click', logout);
+
+if (signup)
+    signup.addEventListener('submit',(e)=>{
+        e.preventDefault();
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email-sign').value;
+        const password = document.getElementById('password-sign').value;
+        const passwordConfirm = document.getElementById('confirm-password').value;
+
+        console.log({name,email,password,passwordConfirm})
+        signUp(name,email,password,passwordConfirm);
+        
+    })
