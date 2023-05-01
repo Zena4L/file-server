@@ -109,6 +109,7 @@ exports.stricted = catchasync(async (req, res, next) => {
   }
 
   req.user = currentUser;
+  res.locals.user = currentUser;
   next();
 });
 exports.restrictTo =

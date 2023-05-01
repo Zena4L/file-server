@@ -13,7 +13,7 @@ block content
                     if user
                         button#logout.block.uppercase.mx-auto.shadow.bg-sky-950.text-white.text-xs.py-3.px-10.rounded(class='hover:bg-indigo-700 focus:shadow-outline focus:outline-none')
                          | logout
-                        a.border-b-2.pr-5(href="#", class="hover:border-b-indigo-500 transition ease-in duration:500")
+                        a.border-b-2.pr-5(href="/me", class="hover:border-b-indigo-500 transition ease-in duration:500")
                             span=user.name     
                     else
                         a(href="/login") 

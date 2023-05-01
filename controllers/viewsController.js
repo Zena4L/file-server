@@ -13,7 +13,7 @@ exports.getOveriew = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getFile = catchAsync(async (req, res) => {
+exports.getFile = catchAsync(async (req, res,next) => {
   //1. get file data
   const file = await File.findOne({ slug: req.params.slug }).populate({
     path: 'uploadedBy',
@@ -42,8 +42,12 @@ exports.login = catchAsync(async (req, res) => {
   });
 });
 exports.signup = catchAsync(async (req, res) => {
-  res.status(200).render('signup');
+  res.status(200).render('signup', {
+    title: 'Sign Up',
+  });
 });
-// exports.fileDownload = catchAsync(async(req,res)=>{
-
-// })
+exports.me = catchAsync(async (req, res) => {
+  res.status(200).render('account', {
+    title: 'My Account',
+  });
+});
