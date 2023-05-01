@@ -21,10 +21,18 @@ exports.getFile = catchAsync(async (req, res) => {
 
   //2. build the template
   //3 render data from step 1
-  res.status(200).render('file', {
-    title: 'All Files',
-    file,
-  });
+  if (!file) {
+    return next(new AppError('There is no file with that name', 404));
+  }
+
+  if (res.locals.user) { // check if user is logged in
+    res.status(200).render('file', {
+      title: `${file.name} - File server`,
+      file,
+    });
+  } else {
+    return res.redirect('/login'); // if not logged in, redirect to login page
+  }
 });
 
 exports.login = catchAsync(async (req, res) => {
