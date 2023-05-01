@@ -1,4 +1,5 @@
 const File = require('../models/fileModel');
+const User = require('../models/userModel');
 const catchAsync = require('../utilis/catchAsync');
 const AppError = require('../utilis/appError')
 
@@ -46,9 +47,21 @@ exports.signup = (req, res) => {
     title: 'Sign Up',
   });
 };
-exports.getAccount = (req, res) => {
-  res.status(200).render('account', {
-    title: 'My Account'
+exports.getProfile = (req,res)=>{
+  res.status(200).render('profile',{
+    title:'Your Account',
+  })
+}
+exports.updateUserData = catchAsync(async(req,res,next)=>{
+  const updatedUser = await User.findByIdAndUpdate(req.user.id,{
+    name: req.body.name,
+    email: req.body.email,
+  },{
+    new: true,
+    runValidators:true
   });
-};
-
+  res.status(200).render('profile',{
+    title:'Your Account',
+    user: updatedUser
+  })
+})

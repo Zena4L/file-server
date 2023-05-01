@@ -2,11 +2,14 @@
 import {login,logout} from './login.js';
 import signUp from './signup.js';
 import {download} from './download.js';
+import {updateSettings} from './updateSettings.js';
 
 
 const loginForm = document.querySelector('.form');
 const logOutBtn = document.querySelector('#logout');
 const downloadBtns = document.querySelectorAll('#downloadBtn');
+const userDataForm = document.querySelector('.user-data-from');
+const passwordForm = document.querySelector('.user-password-forms');
 
 const signup = document.querySelector('#sign-in');
 
@@ -40,3 +43,24 @@ if (signup)
         download(fileId);
       });
     });
+
+  if(userDataForm)
+    userDataForm.addEventListener('submit',(e)=>{
+      e.preventDefault;
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      updateSettings({name,email},'data');
+    })
+
+    if(passwordForm)
+      password.FormaddEventListener('submit',async (e)=>{
+        e.preventDefault;
+        const passwordCurrent = document.getElementById('password-current').value;
+        const password = document.getElementById('password').value;
+        const passwordConfirm = document.getElementById('password-confirm').value;
+       await updateSettings({passwordCurrent,password,passwordConfirm},'password');
+       document.getElementById('password-current').value = '';
+       document.getElementById('password').value = '';
+       document.getElementById('password-confirm').value = '';
+        
+      })

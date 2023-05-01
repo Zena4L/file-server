@@ -4,7 +4,8 @@ const {
   getFile,
   login,
   signup,
-  getAccount
+  getProfile,
+  updateUserData
 } = require('../controllers/viewsController');
 const { isLoggedIn } = require('../controllers/authenController');
 
@@ -16,9 +17,10 @@ const router = express.Router();
 router.get('/', isLoggedIn, getOveriew);
 router.get('/login',isLoggedIn ,login);
 router.get('/signup', signup);
+router.get('/profile',isLoggedIn,getProfile)
 router.get('/:slug', isLoggedIn, getFile);
-router.get('/me', isLoggedIn, getAccount);
 
+router.post('/submit-user-data', isLoggedIn,updateUserData)
 
 
 module.exports = router;
