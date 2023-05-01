@@ -1,5 +1,6 @@
 const File = require('../models/fileModel');
 const catchAsync = require('../utilis/catchAsync');
+const AppError = require('../utilis/appError')
 
 exports.getOveriew = catchAsync(async (req, res, next) => {
   //1. get All tour data from collection
