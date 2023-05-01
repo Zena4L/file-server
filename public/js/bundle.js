@@ -285,8 +285,8 @@ function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyri
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 var download = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(id) {
-    var res, url, link;
+  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(fileId) {
+    var res;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
@@ -294,20 +294,19 @@ var download = /*#__PURE__*/function () {
           _context.next = 3;
           return axios({
             method: 'GET',
-            url: "http://localhost:3000/api/file/download/".concat(id)
-          }, {
+            url: "http://localhost:3000/api/file/download/".concat(fileId),
             withCredentials: true,
-            responseType: 'blob'
+            headers: {
+              'Content-Type': 'application/json'
+            }
           });
         case 3:
           res = _context.sent;
-          if (res.status === 200) {
-            url = window.URL.createObjectURL(new Blob([res.data]));
-            link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', 'file.pdf');
-            document.body.appendChild(link);
-            link.click();
+          if (res.data.status === 'success') {
+            alert('Downloading...');
+            setTimeout(function () {
+              window.location.href = '/';
+            }, 1500);
           }
           _context.next = 11;
           break;
@@ -338,7 +337,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var loginForm = document.querySelector('.form');
 var logOutBtn = document.querySelector('#logout');
-var downloadBtn = document.querySelector('#download');
+var downloadBtns = document.querySelectorAll('#downloadBtn');
 var signup = document.querySelector('#sign-in');
 if (loginForm) loginForm.addEventListener('submit', function (e) {
   e.preventDefault();
@@ -361,12 +360,13 @@ if (signup) signup.addEventListener('submit', function (e) {
   });
   (0, _signup.default)(name, email, password, passwordConfirm);
 });
-if (downloadBtn) {
+downloadBtns.forEach(function (downloadBtn) {
   var fileId = downloadBtn.dataset.id;
+  console.log(fileId);
   downloadBtn.addEventListener('click', function () {
     (0, _download.download)(fileId);
   });
-}
+});
 },{"./login.js":"login.js","./signup.js":"signup.js","./download.js":"download.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -392,7 +392,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63739" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64437" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

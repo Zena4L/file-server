@@ -6,7 +6,7 @@ import {download} from './download.js';
 
 const loginForm = document.querySelector('.form');
 const logOutBtn = document.querySelector('#logout');
-const downloadBtn = document.querySelector('#download');
+const downloadBtns = document.querySelectorAll('#downloadBtn');
 
 const signup = document.querySelector('#sign-in');
 
@@ -34,9 +34,10 @@ if (signup)
         
     })
 
-  if (downloadBtn) {
-    const fileId = downloadBtn.dataset.id;
-    downloadBtn.addEventListener('click', () => {
-      download(fileId);
+  downloadBtns.forEach(downloadBtn => {
+      const fileId = downloadBtn.dataset.id;
+      console.log(fileId);
+      downloadBtn.addEventListener('click', () => {
+        download(fileId);
+      });
     });
-  }

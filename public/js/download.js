@@ -1,23 +1,19 @@
-export const download = async (id) => {
+export const download = async (fileId) => {
     try {
-      const res = await axios(
-        {
-          method: 'GET',
-          url: `http://localhost:3000/api/file/download/${id}`,
+      const res = await axios({
+        method: 'GET',
+        url: `http://localhost:3000/api/file/download/${fileId}`,
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
         },
-        {
-          withCredentials: true,
-          responseType: 'blob',
-        }
-      );
+      });
   
-      if (res.status === 200) {
-        const url = window.URL.createObjectURL(new Blob([res.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'file.pdf');
-        document.body.appendChild(link);
-        link.click();
+      if (res.data.status === 'success') {
+        alert('Downloading...');
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 1500);
       }
     } catch (error) {
       alert('Cannot download this file');
