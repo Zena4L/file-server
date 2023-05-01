@@ -4,7 +4,7 @@ const {
   getFile,
   login,
   signup,
-  me
+  getAccount
 } = require('../controllers/viewsController');
 const { isLoggedIn } = require('../controllers/authenController');
 
@@ -17,7 +17,7 @@ router.get('/', isLoggedIn, getOveriew);
 router.get('/login',isLoggedIn ,login);
 router.get('/signup', signup);
 router.get('/:slug', isLoggedIn, getFile);
-router.get('/me', me);
+router.get('/profile',isLoggedIn ,getAccount);
 // router.get('/me', isLoggedIn, account);
 
 

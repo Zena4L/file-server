@@ -36,18 +36,18 @@ exports.getFile = catchAsync(async (req, res,next) => {
   }
 });
 
-exports.login = catchAsync(async (req, res) => {
+exports.login =(req, res) => {
   res.status(200).render('login', {
     title: 'Login',
   });
-});
-exports.signup = catchAsync(async (req, res) => {
+};
+exports.signup = (req, res) => {
   res.status(200).render('signup', {
     title: 'Sign Up',
   });
-});
-exports.me = catchAsync(async (req, res) => {
+};
+exports.getAccount =  (req, res) => {
   res.status(200).render('account', {
     title: 'My Account',
   });
-});
+};
