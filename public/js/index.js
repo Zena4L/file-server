@@ -36,7 +36,6 @@ if (signup)
 
   downloadBtns.forEach(downloadBtn => {
       const fileId = downloadBtn.dataset.id;
-      console.log(fileId);
       downloadBtn.addEventListener('click', () => {
         download(fileId);
       });

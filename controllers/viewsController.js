@@ -44,3 +44,6 @@ exports.login = catchAsync(async (req, res) => {
 exports.signup = catchAsync(async (req, res) => {
   res.status(200).render('signup');
 });
+// exports.fileDownload = catchAsync(async(req,res)=>{
+
+// })

@@ -4,6 +4,7 @@ const {
   getFile,
   login,
   signup,
+  fileDownload
 } = require('../controllers/viewsController');
 const { isLoggedIn } = require('../controllers/authenController');
 
@@ -16,5 +17,6 @@ router.get('/', isLoggedIn, getOveriew);
 router.get('/login', login);
 router.get('/signup', signup);
 router.get('/:slug', isLoggedIn, getFile);
+
 
 module.exports = router;

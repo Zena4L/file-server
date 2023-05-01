@@ -362,7 +362,6 @@ if (signup) signup.addEventListener('submit', function (e) {
 });
 downloadBtns.forEach(function (downloadBtn) {
   var fileId = downloadBtn.dataset.id;
-  console.log(fileId);
   downloadBtn.addEventListener('click', function () {
     (0, _download.download)(fileId);
   });
