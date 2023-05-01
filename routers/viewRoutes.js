@@ -17,8 +17,8 @@ router.get('/', isLoggedIn, getOveriew);
 router.get('/login',isLoggedIn ,login);
 router.get('/signup', signup);
 router.get('/:slug', isLoggedIn, getFile);
-router.get('/profile',isLoggedIn ,getAccount);
-// router.get('/me', isLoggedIn, account);
+router.get('/me', isLoggedIn, getAccount);
+
 
 
 module.exports = router;
