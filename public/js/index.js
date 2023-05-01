@@ -35,8 +35,8 @@ if (signup)
     })
 
   if (downloadBtn) {
+    const fileId = downloadBtn.dataset.id;
     downloadBtn.addEventListener('click', () => {
-      const slug = downloadBtn.getAttribute('data-slug');
-      download(slug);
+      download(fileId);
     });
   }

@@ -285,8 +285,8 @@ function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyri
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 var download = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(slug) {
-    var res, downloadUrl, link;
+  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(id) {
+    var res, url, link;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
@@ -294,27 +294,20 @@ var download = /*#__PURE__*/function () {
           _context.next = 3;
           return axios({
             method: 'GET',
-            url: "http://localhost:3000/api/file/download/".concat(slug),
-            responseType: 'blob' // to handle binary data
+            url: "http://localhost:3000/api/file/download/".concat(id)
           }, {
             withCredentials: true,
-            headers: {
-              'Content-Type': 'application/json'
-            }
+            responseType: 'blob'
           });
         case 3:
           res = _context.sent;
-          if (res.data.status === 'success') {
-            downloadUrl = window.URL.createObjectURL(new Blob([res.data.data]));
+          if (res.status === 200) {
+            url = window.URL.createObjectURL(new Blob([res.data]));
             link = document.createElement('a');
-            link.href = downloadUrl;
-            link.setAttribute('download', slug);
+            link.href = url;
+            link.setAttribute('download', 'file.pdf');
             document.body.appendChild(link);
             link.click();
-            alert('Downloading...');
-            setTimeout(function () {
-              window.location.href = '/';
-            }, 1500);
           }
           _context.next = 11;
           break;
@@ -322,7 +315,7 @@ var download = /*#__PURE__*/function () {
           _context.prev = 7;
           _context.t0 = _context["catch"](0);
           alert('Cannot download this file');
-          console.log(err.response.data.message);
+          console.log(_context.t0.response.data.message);
         case 11:
         case "end":
           return _context.stop();
@@ -333,8 +326,6 @@ var download = /*#__PURE__*/function () {
     return _ref.apply(this, arguments);
   };
 }();
-
-//   export default download;
 exports.download = download;
 },{}],"index.js":[function(require,module,exports) {
 "use strict";
@@ -371,9 +362,9 @@ if (signup) signup.addEventListener('submit', function (e) {
   (0, _signup.default)(name, email, password, passwordConfirm);
 });
 if (downloadBtn) {
+  var fileId = downloadBtn.dataset.id;
   downloadBtn.addEventListener('click', function () {
-    var slug = downloadBtn.getAttribute('data-slug');
-    (0, _download.download)(slug);
+    (0, _download.download)(fileId);
   });
 }
 },{"./login.js":"login.js","./signup.js":"signup.js","./download.js":"download.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
