@@ -1,10 +1,12 @@
 /* eslint-disable no-undef */
 import {login,logout} from './login.js';
 import signUp from './signup.js';
+import {download} from './download.js';
 
 
 const loginForm = document.querySelector('.form');
 const logOutBtn = document.querySelector('#logout');
+const downloadBtn = document.querySelector('#download');
 
 const signup = document.querySelector('#sign-in');
 
@@ -31,3 +33,10 @@ if (signup)
         signUp(name,email,password,passwordConfirm);
         
     })
+
+  if (downloadBtn) {
+    downloadBtn.addEventListener('click', () => {
+      const slug = downloadBtn.getAttribute('data-slug');
+      download(slug);
+    });
+  }
