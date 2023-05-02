@@ -52,11 +52,7 @@ exports.getProfile = (req,res)=>{
     title:'Your Account',
   })
 }
-exports.uploadFile = (req,res)=>{
-  res.status(200).render('profile',{
-    title:'upload File',
-  })
-}
+
 exports.updateUserData = catchAsync(async(req,res,next)=>{
   const updatedUser = await User.findByIdAndUpdate(req.user.id,{
     name: req.body.name,
@@ -70,3 +66,8 @@ exports.updateUserData = catchAsync(async(req,res,next)=>{
     user: updatedUser
   })
 })
+exports.fileUpload = (req,res)=>{
+  res.status(200).render('fileUpload',{
+    title:'Your Account',
+  })
+}

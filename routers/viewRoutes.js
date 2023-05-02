@@ -6,6 +6,7 @@ const {
   signup,
   getProfile,
   updateUserData,
+  fileUpload,
 } = require('../controllers/viewsController');
 const { isLoggedIn } = require('../controllers/authenController');
 
@@ -19,7 +20,7 @@ router.get('/login',isLoggedIn ,login);
 router.get('/signup', signup);
 router.get('/profile',isLoggedIn,getProfile)
 router.get('/:slug', isLoggedIn, getFile);
-
+router.get('/file-upload', isLoggedIn, fileUpload);
 
 router.post('/submit-user-data', isLoggedIn,updateUserData)
 
