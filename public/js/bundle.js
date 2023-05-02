@@ -345,7 +345,7 @@ var updateSettings = /*#__PURE__*/function () {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           _context.prev = 0;
-          url = type === 'password' ? 'http://localhost:3000/api/updatepassword' : 'http://localhost:3000/api/user/updateme';
+          url = type === 'password' ? 'http://localhost:3000/api/user/updatepassword' : 'http://localhost:3000/api/user/updateme';
           _context.next = 4;
           return axios({
             method: 'PATCH',
@@ -365,14 +365,13 @@ var updateSettings = /*#__PURE__*/function () {
             //   window.location.href = '/profile';
             // }, 1500);
           }
-          _context.next = 12;
+          _context.next = 11;
           break;
         case 8:
           _context.prev = 8;
           _context.t0 = _context["catch"](0);
-          alert('Something went wrong, Try again');
-          console.log(err.res.data.message);
-        case 12:
+          alert(_context.t0.res.data.message);
+        case 11:
         case "end":
           return _context.stop();
       }
@@ -437,36 +436,39 @@ if (userDataForm) userDataForm.addEventListener('submit', function (e) {
     email: email
   }, 'data');
 });
-if (passwordForm) password.FormaddEventListener('submit', /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(e) {
-    var passwordCurrent, password, passwordConfirm;
-    return _regeneratorRuntime().wrap(function _callee$(_context) {
-      while (1) switch (_context.prev = _context.next) {
-        case 0:
-          e.preventDefault;
-          passwordCurrent = document.getElementById('password-current').value;
-          password = document.getElementById('password').value;
-          passwordConfirm = document.getElementById('password-confirm').value;
-          _context.next = 6;
-          return (0, _updateSettings.updateSettings)({
-            passwordCurrent: passwordCurrent,
-            password: password,
-            passwordConfirm: passwordConfirm
-          }, 'password');
-        case 6:
-          document.getElementById('password-current').value = '';
-          document.getElementById('password').value = '';
-          document.getElementById('password-confirm').value = '';
-        case 9:
-        case "end":
-          return _context.stop();
-      }
-    }, _callee);
-  }));
-  return function (_x) {
-    return _ref.apply(this, arguments);
-  };
-}());
+if (passwordForm) {
+  passwordForm.addEventListener('submit', /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(e) {
+      var passwordCurrent, password, passwordConfirm;
+      return _regeneratorRuntime().wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            e.preventDefault();
+            passwordCurrent = document.getElementById('password-current').value;
+            password = document.getElementById('password').value;
+            passwordConfirm = document.getElementById('password-confirm').value;
+            _context.next = 6;
+            return (0, _updateSettings.updateSettings)({
+              passwordCurrent: passwordCurrent,
+              password: password,
+              passwordConfirm: passwordConfirm
+            }, 'password');
+          case 6:
+            document.getElementById('password-current').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('password-confirm').value = '';
+            // console.log({passwordCurrent,password,passwordConfirm})
+          case 9:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }));
+    return function (_x) {
+      return _ref.apply(this, arguments);
+    };
+  }());
+}
 },{"./login.js":"login.js","./signup.js":"signup.js","./download.js":"download.js","./updateSettings.js":"updateSettings.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';

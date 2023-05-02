@@ -1,7 +1,7 @@
 //type is either password or data
-export const updateSettings =async (data,type)=>{
+export const updateSettings = async (data,type)=>{
     try{
-        const url = type === 'password' ? 'http://localhost:3000/api/updatepassword' : 'http://localhost:3000/api/user/updateme'
+        const url = type === 'password' ? 'http://localhost:3000/api/user/updatepassword' : 'http://localhost:3000/api/user/updateme'
         const res = await axios(
             {
               method: 'PATCH',
@@ -22,9 +22,7 @@ export const updateSettings =async (data,type)=>{
             //   window.location.href = '/profile';
             // }, 1500);
           }
-    }catch (error) {
-        alert('Something went wrong, Try again');
-        console.log(err.res.data.message);
-      }
-
+    }catch(err){
+        alert(err.res.data.message)
+    }
 }

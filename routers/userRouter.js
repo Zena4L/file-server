@@ -25,6 +25,7 @@ router.route('/forgotpassword').post(forgotPassword);
 router.route('/resetpassword/:token').patch(resetPassword);
 router.route('/updatepassword').patch(stricted, updatePassword);
 
+
 // user routes
 router.route('/').get(stricted, restrictTo('admin'), getAllUsers);
 router.route('/updateme').patch(stricted, updateMe);

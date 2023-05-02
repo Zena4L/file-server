@@ -52,15 +52,18 @@ if (signup)
       updateSettings({name,email},'data');
     })
 
-    if(passwordForm)
-      password.FormaddEventListener('submit',async (e)=>{
-        e.preventDefault;
+    if(passwordForm){
+      passwordForm.addEventListener('submit',async(e)=>{
+        e.preventDefault();
         const passwordCurrent = document.getElementById('password-current').value;
         const password = document.getElementById('password').value;
         const passwordConfirm = document.getElementById('password-confirm').value;
+        
        await updateSettings({passwordCurrent,password,passwordConfirm},'password');
        document.getElementById('password-current').value = '';
        document.getElementById('password').value = '';
        document.getElementById('password-confirm').value = '';
-        
+      // console.log({passwordCurrent,password,passwordConfirm})
       })
+    }
+ 
