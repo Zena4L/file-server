@@ -66,8 +66,3 @@ exports.updateUserData = catchAsync(async(req,res,next)=>{
     user: updatedUser
   })
 })
-exports.fileUpload = (req,res)=>{
-  res.status(200).render('fileUpload',{
-    title:'Your Account',
-  })
-}
