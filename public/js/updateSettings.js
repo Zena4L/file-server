@@ -18,9 +18,9 @@ export const updateSettings = async (data,type)=>{
 
           if (res.data.status === 'success') {
             alert('update Successful!');
-            // setTimeout(() => {
-            //   window.location.href = '/profile';
-            // }, 1500);
+            setTimeout(() => {
+              window.location.href = '/profile';
+            }, 1500);
           }
     }catch(err){
         alert(err.res.data.message)

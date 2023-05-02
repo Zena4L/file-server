@@ -361,9 +361,9 @@ var updateSettings = /*#__PURE__*/function () {
           res = _context.sent;
           if (res.data.status === 'success') {
             alert('update Successful!');
-            // setTimeout(() => {
-            //   window.location.href = '/profile';
-            // }, 1500);
+            setTimeout(function () {
+              window.location.href = '/profile';
+            }, 1500);
           }
           _context.next = 11;
           break;
