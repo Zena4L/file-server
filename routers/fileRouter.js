@@ -1,18 +1,20 @@
 const express = require('express');
 const {
-  upload,
+  uploadFile,
   getAllFiles,
   getFile,
   downloadFile,
   sendViaEmail,
   deleteFile,
+  fileUpload,
 } = require('../controllers/fileController');
-const { stricted } = require('../controllers/authenController');
+const { stricted,restrictTo } = require('../controllers/authenController');
+
 
 const router = express.Router();
 
 // upload route is for admin only
-router.route('/upload').post(stricted, upload);
+router.route('/upload').post(stricted,restrictTo('admin'),fileUpload,uploadFile);
 
 router.route('/').get(stricted, getAllFiles);
 router.route('/:id').get(stricted, getFile);

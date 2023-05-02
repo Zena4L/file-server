@@ -1,25 +1,61 @@
 // const mongoose = require('mongoose');
+const path = require('path');
+const multer = require('multer');
 const File = require('../models/fileModel');
 const catchAsync = require('../utilis/catchAsync');
 const AppError = require('../utilis/appError');
 const sendMail = require('../utilis/sendMail');
 
 // Upload a new file and only admin can perform thos
+const multerStorage = multer.diskStorage({
+  destination:(req,file,cb) =>{
+    cb(null,'public/data');
+  },
+  filename:(req,file,cb)=>{
+    //file-id-timestamp.ext
+    const ext = file.mimetype.split('/')[1];
+    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+  }
+})
 
-exports.upload = catchAsync(async (req, res, next) => {
+const multerFilter = (req,file,cb)=>{
+  const filetypes = /pdf|jpeg|jpg|png|mp3|mp4|wav|avi|mov/;
+  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+   // Check MIME type
+  const mimetype = filetypes.test(file.mimetype);
+  if (mimetype && extname) {
+    return cb(null, true);
+  } else {
+    cb(new AppError('File not supported',400),false);
+  }
+}
+
+const fileUpload = multer({
+  dest: 'public/data',
+});
+
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter
+})
+
+exports.fileUpload = upload.array('originalname',10);
+
+exports.uploadFile = catchAsync(async (req, res, next) => {
   const newFile = await File.create({
     title: req.body.title,
     description: req.body.description,
     fileType: req.body.fileType,
-    fileUrl: req.body.path,
-    // image: req.body.image,
+    fileUrl: req.files[0].filename,
+    file: req.files[0].originalname,
     uploadedBy: req.user.id,
   });
+
   res.status(200).json({
     status: 'sucess',
     message: 'file succesfully uploaded',
     data: {
-      file: newFile,
+      // file: newFile,
     },
   });
 });

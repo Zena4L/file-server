@@ -20,10 +20,10 @@ const fileSchema = new mongoose.Schema(
       required: [true, 'file requires a category'],
       enum: ['PDF', 'IMAGE', 'AUDIO', 'VIDEO'],
     },
-    // image: {
-    //   type: String,
-    //   required: [true, 'A file must have a image'],
-    // },
+    file: {
+      type: String,
+      required: [true, 'you must attach a file'],
+    },
     emailCount: {
       type: Number,
       default: 0,
