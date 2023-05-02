@@ -25,7 +25,29 @@ exports.upload = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllFiles = catchAsync(async (req, res, next) => {
-  const files = await File.find();
+
+  //1 filtering
+  const queryObj = {...req.query};
+  const excludedFields = ['page','sort','limit','fields'];
+
+  excludedFields.forEach(el=> delete queryObj[el]);
+
+  let query= File.find(queryObj);
+
+  //pagination
+  const page = req.query.page * 1 || 1;
+  const limit = req.query.limit * 1 || 10;
+  const skip = (page - 1) * limit;
+
+  query = query.skip(skip).limit(limit);
+
+  if(req.query.page){
+    const numFiles = await File.countDocuments();
+    if(skip >= numFiles) return next(new AppError('This page does not exists',404));
+  }
+
+  const files = await query;
+
   res.status(200).json({
     status: 'ok',
     length: files.length,
