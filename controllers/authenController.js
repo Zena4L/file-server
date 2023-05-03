@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const catchasync = require('../utilis/catchAsync');
 const AppError = require('../utilis/appError');
-const sendEmail = require('../utilis/sendMail');
+const Email = require('../utilis/sendMail');
 
 const createToken = (user) =>
   jwt.sign({ id: user._id }, process.env.SECRET, {
@@ -50,6 +50,10 @@ exports.signup = catchasync(async (req, res, next) => {
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
   });
+  // const url = 'http://localhost:3000/profile';
+  const url = `${req.protocol}://${req.get('host')}/profile`;
+  console.log(url);
+  await new Email(newUser,url).sendWelcome();
 
   createAndSendJWT(newUser, 200, res);
 });
@@ -135,11 +139,11 @@ exports.forgotPassword = catchasync(async (req, res, next) => {
     )}/api/resetPassword/${resetToken}`;
     const message = `submit a patch request to ${resetURL}, Ignore if you did not perform this action`;
 
-    await sendEmail({
-      email: user.email,
-      subject: 'Your Reset Token, valid for 10mins',
-      message,
-    });
+    // await sendEmail({
+    //   email: user.email,
+    //   subject: 'Your Reset Token, valid for 10mins',
+    //   message,
+    // });
 
     res.status(200).json({
       status: 'success',
