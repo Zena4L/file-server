@@ -425,7 +425,7 @@ var uploadfile = /*#__PURE__*/function () {
         case 8:
           _context.prev = 8;
           _context.t0 = _context["catch"](0);
-          alert(_context.t0.res.data.message);
+          alert('file format not supported');
         case 11:
         case "end":
           return _context.stop();

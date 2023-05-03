@@ -3,7 +3,7 @@ extends base
 block content
     main 
         .content-frame.mt-10 
-            .content-card.p-10.rounded.shadow-md.bg-indigo-300(class="w-2/3 mx-auto h-auto") 
+            .content-card.p-10.rounded.shadow-md.bg-indigo-300(class="min-w-fit mx-auto h-auto").ml-10.mr-10 
                 .img-frame.h-80 
                     if file.fileType === 'PDF'
                         a(href=`${file.fileUrl}`) 
@@ -12,7 +12,7 @@ block content
                         audio(src=fileUrl, controls=true) 
                             p Your browser does not support the audio element.
                     else if file.fileType === 'IMAGE'
-                        img.h-full.w-full.object-fill(src=`./img/${file.fileUrl}`, alt="", srcset="")
+                        img.h-full.w-full.object-fill(src=`./data/${file.fileUrl}`, alt="", srcset="")
                     else if file.fileType === 'VIDEO'
                         video(src=fileUrl, width='100%', height='auto', controls=true)
                             p Your browser does not support the video element.

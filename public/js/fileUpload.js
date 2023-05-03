@@ -21,6 +21,6 @@ export const uploadfile = async (form)=>{
             }, 1500);
           }
     }catch(err){
-        alert(err.res.data.message)
+        alert('file format not supported')
     }
 }
