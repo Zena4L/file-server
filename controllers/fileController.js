@@ -52,7 +52,7 @@ exports.uploadFile = catchAsync(async (req, res, next) => {
   });
 
   res.status(200).json({
-    status: 'sucess',
+    status: 'success',
     message: 'file succesfully uploaded',
     data: {
       // file: newFile,

@@ -5,8 +5,9 @@ const {
   login,
   signup,
   getProfile,
-  updateUserData,
-  uploadFile,
+  // updateUserData,
+  
+  
 } = require('../controllers/viewsController');
 const { isLoggedIn } = require('../controllers/authenController');
 
@@ -21,13 +22,9 @@ router.get('/signup', signup);
 router.get('/profile',isLoggedIn,getProfile)
 router.get('/:slug', isLoggedIn, getFile);
 
-router.get('/upload', (req,res)=>{
-  res.status(200).render('fileUpload',{
-    title:'Your Account',
-  })
-});
 
-router.post('/submit-user-data', isLoggedIn,updateUserData)
+
+// router.post('/submit-user-data', isLoggedIn,updateUserData)
 
 
 module.exports = router;

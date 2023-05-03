@@ -3,6 +3,7 @@ import {login,logout} from './login.js';
 import signUp from './signup.js';
 import {download} from './download.js';
 import {updateSettings} from './updateSettings.js';
+import {uploadfile} from './fileUpload.js';
 
 
 const loginForm = document.querySelector('.form');
@@ -10,6 +11,7 @@ const logOutBtn = document.querySelector('#logout');
 const downloadBtns = document.querySelectorAll('#downloadBtn');
 const userDataForm = document.querySelector('.user-data-from');
 const passwordForm = document.querySelector('.user-password-forms');
+const uploadForm = document.querySelector('.file-upload');
 
 const signup = document.querySelector('#sign-in');
 
@@ -67,3 +69,16 @@ if (signup)
       })
     }
  
+if(uploadForm){
+  uploadForm.addEventListener('submit',(e)=>{
+    e.preventDefault();
+    const form = new FormData();
+    form.append('title',document.getElementById('title').value)
+    form.append('description',document.getElementById('description').value)
+    form.append('fileType',document.getElementById('fileType').value)
+    form.append('originalname',document.getElementById('originalname').files[0])
+    uploadfile(form);
+    // console.log(form);
+  })
+
+}
