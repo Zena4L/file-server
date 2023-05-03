@@ -1,5 +1,6 @@
 // const mongoose = require('mongoose');
 const path = require('path');
+const fs = require('fs');
 const multer = require('multer');
 const File = require('../models/fileModel');
 const catchAsync = require('../utilis/catchAsync');
@@ -114,6 +115,18 @@ exports.deleteFile = catchAsync(async (req, res, next) => {
   });
 });
 
+// exports.downloadFile = catchAsync(async (req, res, next) => {
+//   const file = await File.findById(req.params.id);
+//   if (!file) {
+//     return next(new AppError('File not found', 404));
+//   }
+//   file.downloadCount += 1;
+//   await file.save();
+//   res.status(200).download(file.fileUrl);
+// });
+
+
+
 exports.downloadFile = catchAsync(async (req, res, next) => {
   const file = await File.findById(req.params.id);
   if (!file) {
@@ -121,8 +134,16 @@ exports.downloadFile = catchAsync(async (req, res, next) => {
   }
   file.downloadCount += 1;
   await file.save();
-  res.status(200).download(file.fileUrl);
+
+  const filePath = path.join(__dirname, '..', 'public', 'data', file.fileUrl);
+  const fileName = path.basename(filePath);
+  const extension = path.extname(fileName);
+  res.setHeader('Content-Disposition', `attachment; filename=${file.originalName}${extension}`);
+  res.status(200).download(filePath, fileName);
 });
+
+
+
 
 exports.sendViaEmail = catchAsync(async (req, res, next) => {
   const file = await File.findOne({ _id: req.params.id });

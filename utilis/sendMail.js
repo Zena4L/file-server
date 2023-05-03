@@ -14,7 +14,13 @@ module.exports = class Email {
  newTransport(){
     if(process.env.NODE_ENV === 'production'){
       //send grid transporter
-      return 1;
+      return nodemailer.createTransport({
+        service:'SendGrid',
+        auth:{
+          user:process.env.SENDGRID_USERNAME,
+          pass: process.env.SENDGRID_PASSWORD
+        }
+      })
     }else{
       return nodemailer.createTransport({
         host: process.env.EMAIL_HOST,
@@ -30,7 +36,7 @@ module.exports = class Email {
   async send(template,subject){
     //1 render email HTML based on a pug template
     // /Users/clementbogyah/Desktop/file-server/views/email/welcome.pug
-    const html = pug.renderFile(`/Users/clementbogyah/Desktop/file-server/views/email/welcome.pug`,{
+    const html = pug.renderFile(`/Users/clementbogyah/Desktop/file-server/views/email/${template}.pug`,{
       firstName: this.firstName,
       url:this.url,
       subject
@@ -50,6 +56,9 @@ module.exports = class Email {
   }
   async sendWelcome(){
     await this.send('welcome','Welcome to IFILE!')
+  }
+  async sendResetPassword(){
+    await this.send('passwordReset','Reset your password (Valid for only 10 mins)')
   }
 }
 
