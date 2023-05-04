@@ -7,6 +7,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
 const userRouter = require('./routers/userRouter');
 const fileRouter = require('./routers/fileRouter');
 const viewRouter = require('./routers/viewRoutes');
@@ -58,6 +59,7 @@ app.use(mongoSanitize());
 // Data sanitization against XSS
 app.use(xss());
 
+app.use(compression());
 // Test middleware
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();

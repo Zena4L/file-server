@@ -5,7 +5,7 @@ const signUp = async (name ,email, password,passwordConfirm) => {
       const res = await axios(
         {
           method: 'POST',
-          url: 'http://localhost:3000/api/user/signup',
+          url: '/api/user/signup',
           data: {
             name,
             email,

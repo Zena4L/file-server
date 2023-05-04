@@ -3,7 +3,7 @@ export const download = async (fileId) => {
   try {
     const res = await axios({
       method: 'GET',
-      url: `http://localhost:3000/api/file/download/${fileId}`,
+      url: `/api/file/download/${fileId}`,
       withCredentials: true,
       responseType: 'blob',
       headers: {

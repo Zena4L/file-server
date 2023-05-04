@@ -35,7 +35,7 @@ export const logout = async () => {
   try {
     const res = await axios({
       method: 'GET',
-      url: 'http://localhost:3000/api/user/logout'
+      url: '/api/user/logout'
     });
     if ((res.data.status = 'success')) location.reload(true);
   } catch (err) {

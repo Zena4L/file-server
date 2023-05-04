@@ -3,7 +3,7 @@ export const uploadfile = async (form)=>{
         const res = await axios(
             {
               method: 'POST',
-              url:'http://localhost:3000/api/file/upload',
+              url:'/api/file/upload',
               data:form,
             },
             {

@@ -161,34 +161,3 @@ exports.sendViaEmail = catchAsync(async (req, res, next) => {
     },
   });
 });
-// exports.searchFiles = catchAsync(async (req,res,next)=>{
-//   const { search } = req.query;
-//   const files = await File.find({
-//     $or: [
-//       { title: { $regex: search, $options: 'i' } },
-//       { description: { $regex: search, $options: 'i' } },
-//     ],
-//   }).populate('uploadedBy');
-
-//   res.json({ status: 'success', data: files });
-// })
-exports.searchFiles = async (req, res) => {
-  const searchQuery = req.query.search;
-
-  try {
-    const files = await File.find({
-      $or: [
-        { title: { $regex: searchQuery, $options: 'i' } },
-        { description: { $regex: searchQuery, $options: 'i' } },
-      ],
-    })
-      .populate('uploadedBy', 'name email')
-      .select('-file')
-      .exec();
-
-    res.json({ status: 'success', data: files });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ status: 'error', message: 'Server error' });
-  }
-};
