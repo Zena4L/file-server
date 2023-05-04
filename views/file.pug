@@ -6,7 +6,7 @@ block content
             .content-card.p-10.rounded.shadow-md.bg-indigo-300(class="min-w-fit mx-auto h-auto").ml-10.mr-10 
                 .img-frame.h-80 
                     if file.fileType === 'PDF'
-                        a(href=`${file.fileUrl}`) 
+                        a(href=`./data/${file.fileUrl}`) 
                             h5.text-center Click Here Open
                     else if file.fileType === 'AUDIO'
                         audio(src=fileUrl, controls=true) 
