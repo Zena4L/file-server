@@ -21,6 +21,5 @@ export const emailDownload = async (fileId) => {
         window.location.href = '/signup';
       }, 1500);
       console.log(err.res.data.message);
-    //   console.log(res)
     }
   };

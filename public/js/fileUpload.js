@@ -13,7 +13,6 @@ export const uploadfile = async (form)=>{
               },
             }
           );
-          console.log(res)
           if (res.data.status === 'success') {
             alert('file uploaded Successful!');
             setTimeout(() => {

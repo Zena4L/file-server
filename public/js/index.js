@@ -80,7 +80,6 @@ if(uploadForm){
     form.append('fileType',document.getElementById('fileType').value)
     form.append('originalname',document.getElementById('originalname').files[0])
     uploadfile(form);
-    // console.log(form);
   })
 
 }

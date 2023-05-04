@@ -131,48 +131,13 @@ exports.downloadFile = catchAsync(async (req, res, next) => {
   res.status(200).download(filePath, fileName);
 });
 
-
-
-
-// exports.sendViaEmail = catchAsync(async (req, res, next) => {
-//   const file = await File.findOne({ _id: req.params.id });
-//   if (!file) {
-//     return next(new AppError('File not found', 404));
-//   }
-
-//   // const message = 'Please see the attached file';
-//   // await sendMail({
-//   //   email: req.user.email,
-//   //   subject: 'File attachment',
-//   //   message,
-//   //   attachments: [
-//   //     {
-//   //       filename: file.title,
-//   //       path: file.fileUrl,
-//   //     },
-//   //   ],
-//   // });
-  
-
-//   // Update the file's email count
-//   file.emailCount += 1;
-//   await file.save();
-
-//   res.status(200).json({
-//     status: 'success',
-//     message: 'Email sent successfully',
-//     data: {
-//       file: file,
-//     },
-//   });
-// });
 exports.sendViaEmail = catchAsync(async (req, res, next) => {
   const file = await File.findOne({ _id: req.params.id });
   if (!file) {
     return next(new AppError('File not found', 404));
   }
 
-  console.log(file);
+  
   // Send the email with the attachment
   const url = `${req.protocol}://${req.get('host')}/`;
   const filePath = path.join(__dirname, '..', 'public', 'data', file.fileUrl);
@@ -196,3 +161,34 @@ exports.sendViaEmail = catchAsync(async (req, res, next) => {
     },
   });
 });
+// exports.searchFiles = catchAsync(async (req,res,next)=>{
+//   const { search } = req.query;
+//   const files = await File.find({
+//     $or: [
+//       { title: { $regex: search, $options: 'i' } },
+//       { description: { $regex: search, $options: 'i' } },
+//     ],
+//   }).populate('uploadedBy');
+
+//   res.json({ status: 'success', data: files });
+// })
+exports.searchFiles = async (req, res) => {
+  const searchQuery = req.query.search;
+
+  try {
+    const files = await File.find({
+      $or: [
+        { title: { $regex: searchQuery, $options: 'i' } },
+        { description: { $regex: searchQuery, $options: 'i' } },
+      ],
+    })
+      .populate('uploadedBy', 'name email')
+      .select('-file')
+      .exec();
+
+    res.json({ status: 'success', data: files });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ status: 'error', message: 'Server error' });
+  }
+};

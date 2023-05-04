@@ -7,6 +7,7 @@ const {
   sendViaEmail,
   deleteFile,
   fileUpload,
+  searchFiles
 } = require('../controllers/fileController');
 const { stricted,restrictTo,isLoggedIn } = require('../controllers/authenController');
 
@@ -21,5 +22,8 @@ router.route('/:id').get(stricted, getFile);
 router.route('/:id').delete(stricted, deleteFile);
 router.route('/download/:id').get(stricted, downloadFile);
 router.route('/sendemail/:id').get(stricted, sendViaEmail);
+
+
+
 
 module.exports = router;

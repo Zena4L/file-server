@@ -5,7 +5,7 @@ const {
   login,
   signup,
   getProfile,
-  // updateUserData,
+
   
   
 } = require('../controllers/viewsController');
