@@ -52,7 +52,6 @@ exports.signup = catchasync(async (req, res, next) => {
   });
   // const url = 'http://localhost:3000/profile';
   const url = `${req.protocol}://${req.get('host')}/profile`;
-  console.log(url);
   await new Email(newUser,url).sendWelcome();
 
   createAndSendJWT(newUser, 200, res);
@@ -180,7 +179,7 @@ exports.resetPassword = catchasync(async (req, res, next) => {
  // 4) Log the user in, send JWT
  createAndSendJWT(user, 200, res);
 
-console.log({hashedToken},req.params.token);
+// console.log({hashedToken},req.params.token);
 });
 
 exports.updatePassword = catchasync(async (req, res, next) => {

@@ -4,11 +4,13 @@ import signUp from './signup.js';
 import {download} from './download.js';
 import {updateSettings} from './updateSettings.js';
 import {uploadfile} from './fileUpload.js';
+import { emailDownload } from './emailDownload.js';
 
 
 const loginForm = document.querySelector('.form');
 const logOutBtn = document.querySelector('#logout');
 const downloadBtns = document.querySelectorAll('#downloadBtn');
+const emailBtn = document.querySelectorAll('#EmailBtn');
 const userDataForm = document.querySelector('.user-data-from');
 const passwordForm = document.querySelector('.user-password-forms');
 const uploadForm = document.querySelector('.file-upload');
@@ -81,4 +83,13 @@ if(uploadForm){
     // console.log(form);
   })
 
+}
+
+if (emailBtn){
+  emailBtn.forEach(emailBtn => {
+    const fileId = emailBtn.dataset.id;
+    emailBtn.addEventListener('click', () => {
+      emailDownload(fileId);
+    });
+  });
 }

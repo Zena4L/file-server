@@ -5,7 +5,7 @@ const multer = require('multer');
 const File = require('../models/fileModel');
 const catchAsync = require('../utilis/catchAsync');
 const AppError = require('../utilis/appError');
-const sendMail = require('../utilis/sendMail');
+const Email = require('../utilis/sendMail');
 
 // Upload a new file and only admin can perform thos
 const multerStorage = multer.diskStorage({
@@ -115,17 +115,6 @@ exports.deleteFile = catchAsync(async (req, res, next) => {
   });
 });
 
-// exports.downloadFile = catchAsync(async (req, res, next) => {
-//   const file = await File.findById(req.params.id);
-//   if (!file) {
-//     return next(new AppError('File not found', 404));
-//   }
-//   file.downloadCount += 1;
-//   await file.save();
-//   res.status(200).download(file.fileUrl);
-// });
-
-
 
 exports.downloadFile = catchAsync(async (req, res, next) => {
   const file = await File.findById(req.params.id);
@@ -145,25 +134,56 @@ exports.downloadFile = catchAsync(async (req, res, next) => {
 
 
 
+// exports.sendViaEmail = catchAsync(async (req, res, next) => {
+//   const file = await File.findOne({ _id: req.params.id });
+//   if (!file) {
+//     return next(new AppError('File not found', 404));
+//   }
+
+//   // const message = 'Please see the attached file';
+//   // await sendMail({
+//   //   email: req.user.email,
+//   //   subject: 'File attachment',
+//   //   message,
+//   //   attachments: [
+//   //     {
+//   //       filename: file.title,
+//   //       path: file.fileUrl,
+//   //     },
+//   //   ],
+//   // });
+  
+
+//   // Update the file's email count
+//   file.emailCount += 1;
+//   await file.save();
+
+//   res.status(200).json({
+//     status: 'success',
+//     message: 'Email sent successfully',
+//     data: {
+//       file: file,
+//     },
+//   });
+// });
 exports.sendViaEmail = catchAsync(async (req, res, next) => {
   const file = await File.findOne({ _id: req.params.id });
   if (!file) {
     return next(new AppError('File not found', 404));
   }
 
-  const message = 'Please see the attached file';
-  await sendMail({
-    email: req.user.email,
-    subject: 'File attachment',
-    message,
-    attachments: [
-      {
-        filename: file.title,
-        path: file.fileUrl,
-      },
-    ],
-  });
-
+  console.log(file);
+  // Send the email with the attachment
+  const url = `${req.protocol}://${req.get('host')}/`;
+  const filePath = path.join(__dirname, '..', 'public', 'data', file.fileUrl);
+  const email = new Email(req.user, url);
+  const attachments = [
+    {
+      filename: file.title,
+      path: filePath,
+    },
+  ];
+  await email.send('emailDownload', 'Download attached', attachments);
   // Update the file's email count
   file.emailCount += 1;
   await file.save();

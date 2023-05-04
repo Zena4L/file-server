@@ -8,7 +8,7 @@ const {
   deleteFile,
   fileUpload,
 } = require('../controllers/fileController');
-const { stricted,restrictTo } = require('../controllers/authenController');
+const { stricted,restrictTo,isLoggedIn } = require('../controllers/authenController');
 
 
 const router = express.Router();

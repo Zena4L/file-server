@@ -1,0 +1,33 @@
+extends baseEmail 
+
+
+block content
+    p Hi #{firstName},
+    p This is the file you want to download
+    p Happy to test it with you
+    table.btn.btn-primary(role='presentation', border='0', cellpadding='0', cellspacing='0')
+        tbody
+            tr
+                td(align='left')
+                    table(role='presentation', border='0', cellpadding='0', cellspacing='0')
+                        tbody
+                            tr
+                                td
+                                    a(href=`${url}`, target='_blank') check file attachment
+    p - Developed by Clement Owireku-Bogyah
+
+    // Add the following code to attach a file to the email
+    //- The attachment file should be accessible from the public directory
+    //- You can change the file name and file path according to your requirements
+    //- For example, if you want to attach a file named 'test.pdf' in the 'public/files' directory
+    //- then the file path should be '/files/test.pdf'
+    //- You can also provide a custom display name for the attachment
+    //- For example, if you want to display the attachment as 'My Test File' instead of 'test.pdf'
+    //- then you can set the display name as 'My Test File' in the 'filename' property of the attachment object
+    //- If you want to attach multiple files, you can add multiple attachment objects in the 'attachments' array
+    if (attachments && attachments.length > 0) 
+        each attachment in attachments
+            if (attachment.path)
+                p
+                    a(href=`${baseUrl}${attachment.path}`, download=`${attachment.filename || attachment.path.split('/').pop()}`) #{attachment.filename || attachment.path.split('/').pop()}
+

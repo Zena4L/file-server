@@ -33,7 +33,7 @@ module.exports = class Email {
     }
   }
   //send the actual email
-  async send(template,subject){
+  async send(template,subject,attachments=[]){
     //1 render email HTML based on a pug template
     // /Users/clementbogyah/Desktop/file-server/views/email/welcome.pug
     const html = pug.renderFile(`/Users/clementbogyah/Desktop/file-server/views/email/${template}.pug`,{
@@ -48,6 +48,7 @@ module.exports = class Email {
       subject,
       html,
       text: htmlToText(html),
+      attachments,
 
     };
 
@@ -59,6 +60,9 @@ module.exports = class Email {
   }
   async sendResetPassword(){
     await this.send('passwordReset','Reset your password (Valid for only 10 mins)')
+  }
+  async sendFileViaEmail(){
+    await this.send('emailDownload','Download attached');
   }
 }
 
